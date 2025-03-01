@@ -210,6 +210,47 @@ parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_
 
 }
 
+class BraccioDestro extends Equipaggiamento { 
+
+  
+
+    public function __construct() {
+
+
+parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco);
+
+    }
+
+}
+
+
+class BraccioSinistro extends Equipaggiamento { 
+
+  
+
+    public function __construct() {
+
+
+parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco);
+
+    }
+
+}
+
+class Abiti extends Equipaggiamento { 
+
+  
+
+    public function __construct() {
+
+
+parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco);
+
+    }
+
+}
+
+
 // Fine Classe Equipaggiamento
 
 // Interfacce
