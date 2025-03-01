@@ -10,29 +10,30 @@ use Presentati;
     
     public $Nome;
     public $Razza;
-    public $Equipaggiamento;
+    public $Equipaggiamento = [];
     public $PuntiSalute;
     public $PuntiAttacco;
     public $FrasePersonaggio;
     
     // Costruttore
     
-    public function __construct($nome,$razza, Equipaggiamento $equipaggiamento,$punti_salute, $punti_attacco,$frase_personaggio) { 
+    public function __construct($nome,$razza, array $equipaggiamento,$punti_salute, $punti_attacco,$frase_personaggio) { 
         $this->Nome = $nome;
         $this->Razza = $razza;
         $this->Equipaggiamento = $equipaggiamento;
-        $this->PuntiSalute = $punti_salute + $equipaggiamento->AumentoPuntiSalute;
-        $this->PuntiAttacco = $punti_attacco + $equipaggiamento->AumentoPuntiAttacco;
+        $this->PuntiSalute = $punti_salute ;
+        $this->PuntiAttacco = $punti_attacco ;
         $this->FrasePersonaggio= $frase_personaggio;
         
-        
+        foreach ($equipaggiamento as $item) {
+            $this->PuntiSalute += $item->AumentoPuntiSalute;
+            $this->PuntiAttacco += $item->AumentoPuntiAttacco;
+        }
     } 
     
 }
 
 // Fine Classe Genitore
-
-
 
 // Classe Cacciatore
 
@@ -50,7 +51,7 @@ class Umano extends Personaggio {
     
     // Costruttore e Metodi Umano
     
-    public function __construct($nome,$razza,Equipaggiamento $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$eta,$cognome,Veicolo $veicolo,$lavoro) { 
+    public function __construct($nome,$razza,array $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$eta,$cognome,Veicolo $veicolo,$lavoro) { 
         
         parent::__construct($nome,$razza, $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$eta,$cognome,$veicolo,$lavoro);
         $this->Eta = $eta;
@@ -67,20 +68,17 @@ class Umano extends Personaggio {
 
 //Fine Classe Cacciatore
 
-
 // Classe Aneglo
 
 class Angelo extends Personaggio { 
     
-
-
     // Attributi Angelo
     public $Grazia;
     public $Ali;
     
     // Costruttore e Metodi Angelo
     
-    public function __construct($nome,$razza,Equipaggiamento $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$grazia,$ali) { 
+    public function __construct($nome,$razza,array $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$grazia,$ali) { 
         
         parent::__construct($nome,$razza,$equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$grazia,$ali);
         $this->Grazia = $grazia;
@@ -91,11 +89,10 @@ class Angelo extends Personaggio {
         echo "Ciao sono un angelo,ti sto attaccando e ti faccio il culo!!\n";
     }
     
-  
+
 }
 
 // Fine Classe Aneglo
-
 
 // Classe Arcangelo
 
@@ -110,7 +107,7 @@ class Arcangelo extends Angelo {
     
     // Costruttore e Metodi Arcangelo
     
-    public function __construct($nome,$razza,Equipaggiamento $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$grazia,$ali,$legame_contenitore, $potere_divino,$abilita_speciale,$autorita) { 
+    public function __construct($nome,$razza,array $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$grazia,$ali,$legame_contenitore, $potere_divino,$abilita_speciale,$autorita) { 
         
         parent::__construct($nome,$razza, $equipaggiamento,$punti_salute,$punti_attacco,$frase_personaggio,$grazia,$ali);
         $this->LegameContenitore = $legame_contenitore;
@@ -125,7 +122,6 @@ class Arcangelo extends Angelo {
     public function attacco() { 
         echo "Ciao sono un Arcangelo,'Schiocco di dita'\n";
     }
-
 
     
 }
@@ -201,7 +197,7 @@ class Testa extends Equipaggiamento {
 
   
 
-    public function __construct() {
+    public function __construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco) {
 
 
 parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco);
@@ -214,7 +210,7 @@ class BraccioDestro extends Equipaggiamento {
 
   
 
-    public function __construct() {
+    public function __construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco) {
 
 
 parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco);
@@ -223,12 +219,10 @@ parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_
 
 }
 
-
 class BraccioSinistro extends Equipaggiamento { 
 
   
-
-    public function __construct() {
+    public function __construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco) {
 
 
 parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco);
@@ -240,8 +234,7 @@ parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_
 class Abiti extends Equipaggiamento { 
 
   
-
-    public function __construct() {
+    public function __construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco) {
 
 
 parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_punti_attacco);
@@ -249,7 +242,6 @@ parent::__construct($nome_arma,$descrizione_arma,$aumento_punti_salute,$aumento_
     }
 
 }
-
 
 // Fine Classe Equipaggiamento
 
@@ -275,27 +267,28 @@ trait Mangia {
 
             echo "$this->FrasePersonaggio";
     
-
-
     }
     
 }
 
 // Istanze
- 
+
 // Umani
 
+// !CORREGGERE DESCRIZIONE LAMA ARCANGELA.
+$LamaArcangela= new Equipaggiamento ('Schicco di dita','ad un arcangelo basta schioccare le dita per distruggere qualsiasi persona',0,2000);
+$CamiciaDiFlanella= new Abiti("Camicia di flanella","Camicia di flanella dei Winchester: L'indumento base per ogni cacciatore che si rispetti. Non include protezione contro le battute di Dean.",100,0 );
 $Impala = new Veicolo("Chevrolet","Impala",67,"185KM/H","Benzina","70Litri","Perfette condizioni","L'auto di famiglia dei Winchester, usata per cacciare creature soprannaturali. Non toccarla se non vuoi farti uccidere da Dean Winchester",200,0,50,["Sedili in pelle", "Autoradio", "Portabagagli spazioso anti-demone"],"Dean Winchester");
 
-$Dean = New Umano('Dean',"Umano",new Equipaggiamento('Revolver Colt',"La revolver Colt e una pistola in grado di uccidere qualsiasi, cosa Cavaglieri dell'inferno inclusi,occhio pero: Hai pochi colpi ;)",0,5000),100,200,"Sono Dean Winchester. Sono un cacciatore. Questo è quello che faccio.\n",22,"Winchester",$Impala,'Cacciatore');
+$Dean = New Umano('Dean',"Umano",[new Equipaggiamento('Revolver Colt',"La revolver Colt e una pistola in grado di uccidere qualsiasi, cosa Cavaglieri dell'inferno inclusi,occhio pero: Hai pochi colpi ;)",0,5000),$CamiciaDiFlanella],100,200,"Sono Dean Winchester. Sono un cacciatore. Questo è quello che faccio.\n",22,"Winchester",$Impala,'Cacciatore');
 $Dean->mangia();
 var_dump($Dean);
 $Dean->attacco();
 
-$Sam = new Umano('Sam','Umano',new Equipaggiamento('Pugnale demoiaco'," il pugnale demoniaco è un'arma essenziale nell'arsenale dei fratelli Winchester,in grado di ammazzare demoni comuni",0,500),200,100,"Sono Sam Winchester. Non ho paura di te!\n","18","Winchester",$Impala,'Cacciatore');
+$Sam = new Umano('Sam','Umano',[new Equipaggiamento('Pugnale demoiaco'," il pugnale demoniaco è un'arma essenziale nell'arsenale dei fratelli Winchester,in grado di ammazzare demoni comuni",0,500),$CamiciaDiFlanella],200,100,"Sono Sam Winchester. Non ho paura di te!\n","18","Winchester",$Impala,'Cacciatore');
 var_dump($Sam);
 
-$Bobby= new Umano('Bobby','Umano',new Equipaggiamento("Fucile anti-spettri","Fucile canne mozze caricato a palletoni di sale",0,100),100,100,"IDIOTA!!",61,'Singer',new Veicolo("Chevrolet","Pickup",1970,"160KM/H","benzina",90,"usato","Il fidato pickup di Bobby, usato per trasportare attrezzatura da caccia e altri oggetti.",150,0,70,["Cassone rinforzato", "Gancio traino", "Attrezzi da caccia"], "Bobby Singer"),'Cacciatore,Mentore');
+$Bobby= new Umano('Bobby','Umano',[new Equipaggiamento("Fucile anti-spettri","Fucile canne mozze caricato a palletoni di sale",0,100)],100,100,"IDIOTA!!",61,'Singer',new Veicolo("Chevrolet","Pickup",1970,"160KM/H","benzina",90,"usato","Il fidato pickup di Bobby, usato per trasportare attrezzatura da caccia e altri oggetti.",150,0,70,["Cassone rinforzato", "Gancio traino", "Attrezzi da caccia"], "Bobby Singer"),'Cacciatore,Mentore');
 var_dump($Bobby);
 
 
@@ -303,19 +296,18 @@ var_dump($Bobby);
 
 
 // Angeli 
-$Castiel =  new Angelo('Castiel','Angelo',new Equipaggiamento('Lama Angelica',"La Lama Angelica è una lama in grado di uccidere definitvamente sia Angeli che Demoni ma non funziona su arcangeli,e ovviamente puo uccidere gli umani",0,200),500,300," Sono Castiel un angelo del Signore!\n",500,false);
+$Castiel =  new Angelo('Castiel','Angelo',[new Equipaggiamento('Lama Angelica',"La Lama Angelica è una lama in grado di uccidere definitvamente sia Angeli che Demoni ma non funziona su arcangeli,e ovviamente puo uccidere gli umani",0,200)],500,300,"Sono Castiel un angelo del Signore!\n",500,false);
 var_dump($Castiel);
 
 // Fine Angeli
 
 
 // Inizio Arcangeli 
-$LamaArcangela= new Equipaggiamento ('Schicco di dita','ad un arcangelo basta schioccare le dita per distruggere qualsiasi persona',0,2000);
 
-$Gabriele = new Arcangelo("Gabriele","Arcangelo",new Equipaggiamento('Lama Angelica',"La Lama Angelica è una lama in grado di uccidere definitvamente sia Angeli che Demoni ma non funziona su arcangeli,e ovviamente puo uccidere gli umani",0,200),2000,1000,"La vita è un gioco, e io sono il maestro dei trucchi.\n",2000,true,100,2000,"Manipolazione della realtà",0);
+$Gabriele = new Arcangelo("Gabriele","Arcangelo",[new Equipaggiamento('Lama Angelica',"La Lama Angelica è una lama in grado di uccidere definitvamente sia Angeli che Demoni ma non funziona su arcangeli,e ovviamente puo uccidere gli umani",0,200)],2000,1000,"La vita è un gioco, e io sono il maestro dei trucchi.\n",2000,true,100,2000,"Manipolazione della realtà",0);
 var_dump($Gabriele);
 
-$Lucifero = new Arcangelo("Lucifero","Arcangelo",$LamaArcangela,4000,5000,"Everybody sing this song, doodah, doodah,Well everybody sing this song all the doodah day
+$Lucifero = new Arcangelo("Lucifero","Arcangelo",[$LamaArcangela],4000,5000,"Everybody sing this song, doodah, doodah,Well everybody sing this song all the doodah day
 All the doodah day, all the doodah day\n",5000,true,100,4000,"Potere della luce","Comanda su tutti i demoni incutendo terrore");
 var_dump($Lucifero);
 
@@ -334,7 +326,5 @@ $Lucifero->presentati();
 $Dean->presentati();
 $Sam->presentati();
 $Bobby->presentati();
-
-
 
 ?>
